@@ -5,4 +5,8 @@ module.exports = {
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
   },
+  collectCoverageFrom: [
+    "<rootDir>/src/components/**/*.tsx",
+    "<rootDir>/src/pages/**/*.tsx",
+  ],
 };
