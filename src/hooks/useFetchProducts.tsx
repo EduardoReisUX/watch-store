@@ -8,15 +8,26 @@ interface Product {
   image: string;
 }
 
+interface DataResponse {
+  products: Product[];
+}
+
 export function useFetchProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<Boolean>(false);
 
+  async function getProducts() {
+    let { data } = await axios.get<DataResponse>("/api/products");
+
+    if (!data.products || data.products.length == 0) {
+      setError(true);
+    } else {
+      setProducts(data.products);
+    }
+  }
+
   useEffect(() => {
-    axios
-      .get("/api/products")
-      .then((res) => setProducts(res.data.products))
-      .catch((er) => setError(true));
+    getProducts();
   }, []);
 
   return { products, error };
