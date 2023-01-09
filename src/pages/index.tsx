@@ -1,26 +1,10 @@
-import axios from "axios";
 import Head from "next/head";
-import { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { Search } from "../components/Search";
-
-interface Product {
-  id: string;
-  title: string;
-  price: string;
-  image: string;
-}
+import { useFetchProducts } from "../hooks/useFetchProducts";
 
 export default function Home() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<Boolean>(false);
-
-  useEffect(() => {
-    axios
-      .get("/api/products")
-      .then((res) => setProducts(res.data.products))
-      .catch((er) => setError(true));
-  }, []);
+  const { products, error } = useFetchProducts();
 
   function doSearch() {}
   function addToCart() {}
@@ -37,7 +21,7 @@ export default function Home() {
           <h3 className="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
           <span className="mt-3 text-sm text-gray-500">200+ Products</span>
           <div className="mt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {error
+            {error || products.length === 0
               ? "No products was found"
               : products.map((product) => (
                   <ProductCard
