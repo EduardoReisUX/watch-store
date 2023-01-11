@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   price: string;

@@ -7,9 +7,14 @@ interface SearchProps {
 export function Search({ doSearch }: SearchProps) {
   const [term, setTerm] = useState("");
 
+  function submitHandler(event: any) {
+    event.preventDefault();
+    doSearch(term);
+  }
+
   return (
     <form
-      onSubmit={() => doSearch(term)}
+      onSubmit={submitHandler}
       name="search-form"
       className="relative mt-6 max-w-lg mx-auto"
     >

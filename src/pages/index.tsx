@@ -1,10 +1,25 @@
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { Search } from "../components/Search";
-import { useFetchProducts } from "../hooks/useFetchProducts";
+import { Product, useFetchProducts } from "../hooks/useFetchProducts";
 
 export default function Home() {
   const { products, error } = useFetchProducts();
+  const [term, setTerm] = useState("");
+  const [localProducts, setLocalProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (term === "") {
+      setLocalProducts(products);
+    } else {
+      setLocalProducts(
+        products.filter(({ title }) => {
+          return title.toLowerCase().indexOf(term.toLowerCase()) > -1;
+        })
+      );
+    }
+  }, [products, term]);
 
   function renderErrorMessage() {
     if (!error) return;
@@ -13,16 +28,15 @@ export default function Home() {
   }
 
   function renderProductListOrMessage() {
-    if (products.length === 0 && !error) {
+    if (localProducts.length === 0 && !error) {
       return <h4 data-testid="no-products"> No products was found</h4>;
     }
 
-    return products.map((product) => (
+    return localProducts.map((product) => (
       <ProductCard product={product} key={product.id} addToCart={addToCart} />
     ));
   }
 
-  function doSearch() {}
   function addToCart() {}
 
   return (
@@ -32,7 +46,7 @@ export default function Home() {
       </Head>
 
       <main className="my-8" data-testid="product-list">
-        <Search doSearch={doSearch} />
+        <Search doSearch={(term) => setTerm(term)} />
         <div className="container mx-auto px-6 mt-4">
           <h3 className="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
           <span className="mt-3 text-sm text-gray-500">200+ Products</span>

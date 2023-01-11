@@ -1,4 +1,5 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Response, Server } from "miragejs";
 import Home from "../pages";
 import { makeServer } from "../services/miragejs/server";
@@ -8,7 +9,6 @@ describe("ProductList", () => {
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
-    render(<Home />);
   });
 
   afterEach(() => {
@@ -16,6 +16,7 @@ describe("ProductList", () => {
   });
 
   it("should render ProductList", () => {
+    render(<Home />);
     expect(screen.getByTestId("product-list")).toBeInTheDocument();
   });
 
@@ -29,6 +30,7 @@ describe("ProductList", () => {
   });
 
   it("should render the no products message", async () => {
+    render(<Home />);
     await waitFor(() => {
       expect(screen.getByText(/No products was found/i)).toBeInTheDocument();
       expect(screen.getByTestId("no-products")).toBeInTheDocument();
@@ -39,6 +41,7 @@ describe("ProductList", () => {
     server.get("products", () => {
       return new Response(500, {}, "");
     });
+    render(<Home />);
 
     await waitFor(() => {
       expect(screen.getByTestId("server-error")).toBeInTheDocument();
@@ -47,9 +50,37 @@ describe("ProductList", () => {
     });
   });
 
-  it.todo("should render the Search component");
+  it("should render the Search component", () => {
+    render(<Home />);
+    expect(screen.getByRole("searchbox")).toBeInTheDocument();
+  });
 
-  it.todo("should filter the product list when a search is performed");
+  it("should filter the product list when a search is performed", async () => {
+    const searchTerm = "Relógio bonito";
+    server.createList("product", 2);
+
+    server.create("product", {
+      // @ts-ignore
+      title: searchTerm,
+    });
+
+    render(<Home />);
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("product-card")).toHaveLength(3);
+    });
+
+    const form = screen.getByRole("form");
+    const input = screen.getByRole("searchbox");
+
+    await userEvent.type(input, searchTerm);
+    fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId("product-card")).toHaveLength(1);
+      expect(screen.getByText(/Relógio bonito/i)).toBeInTheDocument();
+    });
+  });
 
   it.todo("should display the total quantity of products");
 
