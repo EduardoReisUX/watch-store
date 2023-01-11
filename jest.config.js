@@ -8,5 +8,7 @@ module.exports = {
   collectCoverageFrom: [
     "<rootDir>/src/components/**/*.tsx",
     "<rootDir>/src/pages/**/*.tsx",
+    "<rootDir>/src/hooks/**/*.{ts,tsx}",
+    "!<rootDir>/src/pages/**/{_app,_document}.tsx",
   ],
 };
