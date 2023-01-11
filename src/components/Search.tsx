@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface SearchProps {
   doSearch(term: string): void;
@@ -10,6 +10,14 @@ export function Search({ doSearch }: SearchProps) {
   function submitHandler(event: any) {
     event.preventDefault();
     doSearch(term);
+  }
+
+  function inputHandler(event: any) {
+    setTerm(event.target.value);
+
+    if (event.target.value === "") {
+      doSearch("");
+    }
   }
 
   return (
@@ -41,7 +49,7 @@ export function Search({ doSearch }: SearchProps) {
         type="search"
         placeholder="Search"
         value={term}
-        onChange={(ev) => setTerm(ev.target.value)}
+        onInput={inputHandler}
       />
     </form>
   );
