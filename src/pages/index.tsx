@@ -6,6 +6,22 @@ import { useFetchProducts } from "../hooks/useFetchProducts";
 export default function Home() {
   const { products, error } = useFetchProducts();
 
+  function renderErrorMessage() {
+    if (!error) return;
+
+    return <h4 data-testid="server-error">Server is down</h4>;
+  }
+
+  function renderProductListOrMessage() {
+    if (products.length === 0 && !error) {
+      return <h4 data-testid="no-products"> No products was found</h4>;
+    }
+
+    return products.map((product) => (
+      <ProductCard product={product} key={product.id} addToCart={addToCart} />
+    ));
+  }
+
   function doSearch() {}
   function addToCart() {}
 
@@ -21,15 +37,8 @@ export default function Home() {
           <h3 className="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
           <span className="mt-3 text-sm text-gray-500">200+ Products</span>
           <div className="mt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {error || products.length === 0
-              ? "No products was found"
-              : products.map((product) => (
-                  <ProductCard
-                    product={product}
-                    key={product.id}
-                    addToCart={addToCart}
-                  />
-                ))}
+            {renderErrorMessage()}
+            {renderProductListOrMessage()}
           </div>
         </div>
       </main>
