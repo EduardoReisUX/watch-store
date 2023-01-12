@@ -4,8 +4,17 @@ import { Response, Server } from "miragejs";
 import Home from "../pages";
 import { makeServer } from "../services/miragejs/server";
 
+type Models = {
+  product: {
+    id: string;
+    title: string;
+    price: string;
+    image: string;
+  };
+};
+
 describe("ProductList", () => {
-  let server: Server;
+  let server: Server<Models>;
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
@@ -60,7 +69,6 @@ describe("ProductList", () => {
     server.createList("product", 2);
 
     server.create("product", {
-      // @ts-ignore
       title: searchTerm,
     });
 
@@ -105,7 +113,6 @@ describe("ProductList", () => {
     server.createList("product", 2);
 
     server.create("product", {
-      // @ts-ignore
       title: searchTerm,
     });
 

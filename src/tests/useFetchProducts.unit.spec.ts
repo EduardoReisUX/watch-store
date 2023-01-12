@@ -3,8 +3,17 @@ import { Response, Server } from "miragejs";
 import { useFetchProducts } from "../hooks/useFetchProducts";
 import { makeServer } from "../services/miragejs/server";
 
+type Models = {
+  product: {
+    id: string;
+    title: string;
+    price: string;
+    image: string;
+  };
+};
+
 describe("useFetchProducts", () => {
-  let server: Server;
+  let server: Server<Models>;
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
