@@ -29,12 +29,18 @@ export default function Home() {
 
   function renderProductListOrMessage() {
     if (localProducts.length === 0 && !error) {
-      return <h4 data-testid="no-products"> No products was found</h4>;
+      return <h4 data-testid="no-products">No products was found</h4>;
     }
 
     return localProducts.map((product) => (
       <ProductCard product={product} key={product.id} addToCart={addToCart} />
     ));
+  }
+
+  function renderProductQuantity() {
+    return localProducts.length === 1
+      ? "1 Product"
+      : `${localProducts.length} Products`;
   }
 
   function addToCart() {}
@@ -49,7 +55,9 @@ export default function Home() {
         <Search doSearch={(term) => setTerm(term)} />
         <div className="container mx-auto px-6 mt-4">
           <h3 className="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
-          <span className="mt-3 text-sm text-gray-500">200+ Products</span>
+          <span className="mt-3 text-sm text-gray-500">
+            {renderProductQuantity()}
+          </span>
           <div className="mt-4 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {renderErrorMessage()}
             {renderProductListOrMessage()}
