@@ -11,7 +11,7 @@ interface CartState {
 
 export const useCartStore = create<CartState>((set) => ({
   state: {
-    open: true,
+    open: false,
   },
 
   actions: {
