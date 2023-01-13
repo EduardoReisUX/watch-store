@@ -22,7 +22,8 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
         >
           <button
             onClick={() => addToCart(product)}
-            className="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4"
+            className="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 
+            hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,10 +41,10 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
             </svg>
           </button>
         </div>
-      </div>
-      <div className="px-5 py-3">
-        <h3 className="text-gray-700 uppercase">{product.title}</h3>
-        <span className="text-gray-500 mt-2">${product.price}</span>
+        <div className="px-5 py-3">
+          <h3 className="text-gray-700 uppercase">{product.title}</h3>
+          <span className="text-gray-500 mt-2">${product.price}</span>
+        </div>
       </div>
     </section>
   );
