@@ -1,3 +1,4 @@
+import { useCartStore } from "../store/cart";
 import { Cart } from "./Cart";
 
 interface LayoutProps {
@@ -5,7 +6,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  function toggle() {}
+  const toggle = useCartStore(({ actions }) => actions.toggle);
 
   return (
     <div className="bg-white">
