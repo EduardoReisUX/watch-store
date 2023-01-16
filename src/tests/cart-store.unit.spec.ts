@@ -43,15 +43,17 @@ describe("Cart Store", () => {
     } = result.current;
 
     expect(result.current.state.open).toBe(false);
+    expect(result.current.state.products).toHaveLength(0);
 
     act(() => toggle());
     expect(result.current.state.open).toBe(true);
 
     act(() => toggle());
     expect(result.current.state.open).toBe(false);
+    expect(result.current.state.products).toHaveLength(0);
   });
 
-  it("should add product to the products array", () => {
+  it("should add product to products list", () => {
     const products = server.createList("product", 2);
 
     const { result } = renderHook(() => useCartStore());
