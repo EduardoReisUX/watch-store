@@ -7,7 +7,7 @@ interface Product {
   image: string;
 }
 
-interface CartState {
+export interface CartState {
   state: {
     open: boolean;
     products: Product[];
@@ -15,14 +15,25 @@ interface CartState {
   actions: {
     toggle: () => void;
     add: (product: Product) => void;
+    reset: () => void;
   };
 }
 
+const initialState = {
+  open: false,
+  products: [],
+};
+
+function addProduct({ products }: CartState["state"], product: Product) {
+  if (products.includes(product)) {
+    return [...products];
+  }
+
+  return [...products, product];
+}
+
 export const useCartStore = create<CartState>((set) => ({
-  state: {
-    open: false,
-    products: [],
-  },
+  state: initialState,
 
   actions: {
     toggle: () =>
@@ -36,8 +47,9 @@ export const useCartStore = create<CartState>((set) => ({
       set(({ state }) => ({
         state: {
           open: true,
-          products: [...state.products, product],
+          products: addProduct(state, product),
         },
       })),
+    reset: () => set(() => ({ state: initialState })),
   },
 }));

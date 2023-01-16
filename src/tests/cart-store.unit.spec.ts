@@ -1,7 +1,7 @@
-import { act, renderHook } from "@testing-library/react-hooks";
+import { act, renderHook, RenderResult } from "@testing-library/react-hooks";
 import { Server } from "miragejs";
 import { makeServer } from "../services/miragejs/server";
-import { useCartStore } from "../store/cart";
+import { CartState, useCartStore } from "../store/cart";
 
 type Models = {
   product: {
@@ -14,30 +14,28 @@ type Models = {
 
 describe("Cart Store", () => {
   let server: Server<Models>;
+  let result: RenderResult<CartState>;
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
+    result = renderHook(() => useCartStore()).result;
   });
 
   afterEach(() => {
     server.shutdown();
+    act(() => result.current.actions.reset());
   });
 
   it("should return open equals false on initial state", () => {
-    const { result } = renderHook(() => useCartStore());
-
     expect(result.current.state.open).toBe(false);
   });
 
   it("should return an empty array for products on initial state", () => {
-    const { result } = renderHook(() => useCartStore());
-
     expect(Array.isArray(result.current.state.products)).toBe(true);
     expect(result.current.state.products).toHaveLength(0);
   });
 
   it("should toggle open state", () => {
-    const { result } = renderHook(() => useCartStore());
     const {
       actions: { toggle },
     } = result.current;
@@ -56,7 +54,6 @@ describe("Cart Store", () => {
   it("should add product to products list", () => {
     const products = server.createList("product", 2);
 
-    const { result } = renderHook(() => useCartStore());
     const {
       actions: { add },
     } = result.current;
@@ -66,5 +63,17 @@ describe("Cart Store", () => {
     });
 
     expect(result.current.state.products).toHaveLength(2);
+  });
+
+  it("should not add same product twice", () => {
+    const product = server.create("product");
+    const {
+      actions: { add },
+    } = result.current;
+
+    act(() => add(product));
+    act(() => add(product));
+
+    expect(result.current.state.products).toHaveLength(1);
   });
 });
