@@ -35,7 +35,7 @@ export const useCartStore = create<CartState>((set) => ({
     add: (product: Product) =>
       set(({ state }) => ({
         state: {
-          ...state,
+          open: true,
           products: [...state.products, product],
         },
       })),
