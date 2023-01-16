@@ -2,13 +2,12 @@ import { useCartStore } from "../store/cart";
 import { CartItem } from "./CartItem";
 
 export function Cart() {
+  const toggle = useCartStore(({ actions }) => actions.toggle);
+  const { open, products } = useCartStore(({ state }) => state);
+
   function removeAll() {
     throw new Error("Function not implemented.");
   }
-
-  const toggle = useCartStore(({ actions }) => actions.toggle);
-
-  const open = useCartStore(({ state }) => state.open);
 
   return (
     <div
@@ -44,13 +43,10 @@ export function Cart() {
         </button>
       </div>
       <hr className="my-3" />
-      <CartItem
-        product={{
-          title: "",
-          price: "",
-          image: "",
-        }}
-      />
+      {products.map((product) => (
+        <CartItem product={product} key={product.id} />
+      ))}
+
       <a className="flex items-center justify-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
         <span>Checkout</span>
         <svg
