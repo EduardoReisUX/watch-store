@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { Search } from "../components/Search";
 import { Product, useFetchProducts } from "../hooks/useFetchProducts";
+import { useCartStore } from "../store/cart";
 
 export default function Home() {
   const { products, error } = useFetchProducts();
   const [term, setTerm] = useState("");
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
+
+  const addToCart = useCartStore(({ actions }) => actions.add);
 
   useEffect(() => {
     if (term === "") {
@@ -42,8 +45,6 @@ export default function Home() {
       ? "1 Product"
       : `${localProducts.length} Products`;
   }
-
-  function addToCart() {}
 
   return (
     <>
