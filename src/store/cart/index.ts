@@ -1,11 +1,6 @@
+import produce from "immer";
 import { create } from "zustand";
-
-interface Product {
-  id: string;
-  title: string;
-  price: string;
-  image: string;
-}
+import { Product } from "../../hooks/useFetchProducts";
 
 export interface CartState {
   state: {
@@ -19,37 +14,39 @@ export interface CartState {
   };
 }
 
-const initialState = {
+type TSetStateFnParam = (state: CartState) => void;
+
+const initialState: CartState["state"] = {
   open: false,
   products: [],
 };
 
-function addProduct({ products }: CartState["state"], product: Product) {
-  if (products.includes(product)) {
-    return [...products];
-  }
+export const useCartStore = create<CartState>((set) => {
+  const setState = (fn: TSetStateFnParam) => set(produce(fn));
 
-  return [...products, product];
-}
+  return {
+    state: initialState,
 
-export const useCartStore = create<CartState>((set) => ({
-  state: initialState,
+    actions: {
+      toggle() {
+        setState(({ state }) => {
+          state.open = !state.open;
+        });
+      },
 
-  actions: {
-    toggle: () =>
-      set(({ state }) => ({
-        state: {
-          ...state,
-          open: !state.open,
-        },
-      })),
-    add: (product: Product) =>
-      set(({ state }) => ({
-        state: {
-          open: true,
-          products: addProduct(state, product),
-        },
-      })),
-    reset: () => set(() => ({ state: initialState })),
-  },
-}));
+      reset() {
+        setState((store) => {
+          store.state = initialState;
+        });
+      },
+
+      add(product) {
+        setState(({ state }) => {
+          if (!state.products.includes(product)) {
+            state.products.push(product);
+          }
+        });
+      },
+    },
+  };
+});
