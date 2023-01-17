@@ -76,4 +76,36 @@ describe("Cart Store", () => {
 
     expect(result.current.state.products).toHaveLength(1);
   });
+
+  it("should remove a product from the store", () => {
+    const products = server.createList("product", 3);
+
+    products.forEach((product) => {
+      act(() => result.current.actions.add(product));
+    });
+
+    expect(result.current.state.products).toHaveLength(3);
+
+    const [product1, product2, product3] = products;
+
+    act(() => result.current.actions.remove(product2));
+
+    expect(result.current.state.products).toHaveLength(2);
+    expect(result.current.state.products.includes(product2)).toBeFalsy();
+  });
+
+  it("should remove all products from the store", () => {
+    const products = server.createList("product", 3);
+
+    products.forEach((product) => {
+      act(() => result.current.actions.add(product));
+    });
+
+    expect(result.current.state.products).toHaveLength(3);
+
+    act(() => result.current.actions.removeAll());
+
+    expect(Array.isArray(result.current.state.products)).toBe(true);
+    expect(result.current.state.products).toHaveLength(0);
+  });
 });
