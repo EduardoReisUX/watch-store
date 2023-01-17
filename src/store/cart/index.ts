@@ -44,10 +44,11 @@ export const useCartStore = create<CartState>((set) => {
 
       add(product) {
         setState(({ state }) => {
+          state.open = true;
           const notExists = !state.products.find(({ id }) => id === product.id);
+
           if (notExists) {
             state.products.push(product);
-            state.open = true;
           }
         });
       },
