@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act, renderHook, RenderResult } from "@testing-library/react-hooks";
+import { setAutoFreeze } from "immer";
 import { Server } from "miragejs";
 import { Cart } from "../components/Cart";
 import { Product } from "../hooks/useFetchProducts";
@@ -9,6 +10,8 @@ import { CartState, useCartStore } from "../store/cart";
 type Models = {
   product: Product;
 };
+
+setAutoFreeze(false);
 
 describe("Cart", () => {
   let server: Server<Models>;

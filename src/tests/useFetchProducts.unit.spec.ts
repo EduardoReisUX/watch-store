@@ -1,15 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { Response, Server } from "miragejs";
-import { useFetchProducts } from "../hooks/useFetchProducts";
+import { Product, useFetchProducts } from "../hooks/useFetchProducts";
 import { makeServer } from "../services/miragejs/server";
 
 type Models = {
-  product: {
-    id: string;
-    title: string;
-    price: string;
-    image: string;
-  };
+  product: Product;
 };
 
 describe("useFetchProducts", () => {

@@ -1,16 +1,12 @@
 import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Response, Server } from "miragejs";
+import { Product } from "../hooks/useFetchProducts";
 import Home from "../pages";
 import { makeServer } from "../services/miragejs/server";
 
 type Models = {
-  product: {
-    id: string;
-    title: string;
-    price: string;
-    image: string;
-  };
+  product: Product;
 };
 
 describe("ProductList", () => {

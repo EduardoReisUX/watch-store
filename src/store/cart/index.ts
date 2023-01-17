@@ -44,6 +44,7 @@ export const useCartStore = create<CartState>((set) => {
         setState(({ state }) => {
           if (!state.products.includes(product)) {
             state.products.push(product);
+            state.open = true;
           }
         });
       },
