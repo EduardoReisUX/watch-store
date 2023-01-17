@@ -1,15 +1,11 @@
 import { act, renderHook, RenderResult } from "@testing-library/react-hooks";
 import { Server } from "miragejs";
+import { Product } from "../hooks/useFetchProducts";
 import { makeServer } from "../services/miragejs/server";
 import { CartState, useCartStore } from "../store/cart";
 
 type Models = {
-  product: {
-    id: string;
-    title: string;
-    price: string;
-    image: string;
-  };
+  product: Product;
 };
 
 describe("Cart Store", () => {

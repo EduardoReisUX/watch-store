@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { Product } from "../hooks/useFetchProducts";
+import { useCartStore } from "../store/cart";
 
-interface Product {
-  product: { title: string; price: string; image: string };
+interface CartItemProps {
+  product: Product;
 }
 
-export function CartItem({ product }: Product) {
+export function CartItem({ product }: CartItemProps) {
   const [quantity, setQuantity] = useState(1);
+  const {
+    actions: { remove },
+  } = useCartStore();
 
   function increase() {
     setQuantity(quantity + 1);
@@ -26,6 +31,7 @@ export function CartItem({ product }: Product) {
 
         <div className="mx-3">
           <h3 className="text-sm text-gray-600">{product.title}</h3>
+          <button onClick={() => remove(product)}>Remove</button>
           <div className="flex items-center mt-2">
             <button
               className="text-gray-500 focus:outline-none focus:text-gray-600"
