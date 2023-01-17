@@ -34,6 +34,7 @@ export function CartItem({ product }: CartItemProps) {
           <button onClick={() => remove(product)}>Remove</button>
           <div className="flex items-center mt-2">
             <button
+              data-testid="decrease-btn"
               className="text-gray-500 focus:outline-none focus:text-gray-600"
               onClick={() => decrease()}
             >
@@ -56,6 +57,7 @@ export function CartItem({ product }: CartItemProps) {
               {quantity}
             </span>
             <button
+              data-testid="increase-btn"
               className="text-gray-500 focus:outline-none focus:text-gray-600"
               onClick={() => increase()}
             >
