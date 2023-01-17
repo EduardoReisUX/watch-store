@@ -90,6 +90,19 @@ describe("Cart Store", () => {
     expect(result.current.state.products.includes(product2)).toBeFalsy();
   });
 
+  it("should not change products from store if provided product doesn't exists", () => {
+    const [product1, product2, product3] = server.createList("product", 3);
+
+    act(() => result.current.actions.add(product1));
+    act(() => result.current.actions.add(product2));
+
+    expect(result.current.state.products).toHaveLength(2);
+
+    act(() => result.current.actions.remove(product3));
+
+    expect(result.current.state.products).toHaveLength(2);
+  });
+
   it("should remove all products from the store", () => {
     const products = server.createList("product", 3);
 
