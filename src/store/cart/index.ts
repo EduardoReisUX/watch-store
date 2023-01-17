@@ -9,8 +9,10 @@ export interface CartState {
   };
   actions: {
     toggle: () => void;
-    add: (product: Product) => void;
     reset: () => void;
+    add: (product: Product) => void;
+    remove: (product: Product) => void;
+    removeAll: () => void;
   };
 }
 
@@ -46,6 +48,24 @@ export const useCartStore = create<CartState>((set) => {
             state.products.push(product);
             state.open = true;
           }
+        });
+      },
+
+      remove(product) {
+        setState(({ state }) => {
+          const exists = !!state.products.find(({ id }) => id === product.id);
+
+          if (exists) {
+            state.products = state.products.filter(({ id }) => {
+              return id !== product.id;
+            });
+          }
+        });
+      },
+
+      removeAll() {
+        setState(({ state }) => {
+          state.products = [];
         });
       },
     },
