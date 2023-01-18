@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Product } from "../hooks/useFetchProducts";
 import { useCartStore } from "../store/cart";
 
@@ -7,18 +6,9 @@ interface CartItemProps {
 }
 
 export function CartItem({ product }: CartItemProps) {
-  const [quantity, setQuantity] = useState(1);
   const {
-    actions: { remove },
+    actions: { remove, increase, decrease },
   } = useCartStore();
-
-  function increase() {
-    setQuantity(quantity + 1);
-  }
-
-  function decrease() {
-    setQuantity(quantity > 0 ? quantity - 1 : 0);
-  }
 
   return (
     <div data-testid="cart-item" className="flex justify-between mt-6">
@@ -31,12 +21,14 @@ export function CartItem({ product }: CartItemProps) {
 
         <div className="mx-3">
           <h3 className="text-sm text-gray-600">{product.title}</h3>
-          <button onClick={() => remove(product)}>Remove</button>
+          <button className="text-xs font-bold" onClick={() => remove(product)}>
+            Remove
+          </button>
           <div className="flex items-center mt-2">
             <button
               data-testid="decrease-btn"
               className="text-gray-500 focus:outline-none focus:text-gray-600"
-              onClick={() => decrease()}
+              onClick={() => decrease(product)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -54,12 +46,12 @@ export function CartItem({ product }: CartItemProps) {
               </svg>
             </button>
             <span data-testid="quantity" className="text-gray-700 mx-2">
-              {quantity}
+              {product.quantity}
             </span>
             <button
               data-testid="increase-btn"
               className="text-gray-500 focus:outline-none focus:text-gray-600"
-              onClick={() => increase()}
+              onClick={() => increase(product)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
