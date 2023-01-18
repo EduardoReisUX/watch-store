@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { setAutoFreeze } from "immer";
 import { CartItem } from "../components/CartItem";
@@ -32,53 +32,32 @@ describe("CartItem", () => {
     expect(screen.getByRole("img")).toHaveAttribute("alt", product.title);
   });
 
-  it("should display 1 as initial quantity", () => {
-    renderCartItem();
-    expect(screen.getByTestId("quantity").textContent).toBe("1");
+  it("should call increase() when increase button is clicked", async () => {
+    const { result } = renderHook(() => useCartStore());
+    const spy = jest.spyOn(result.current.actions, "increase");
+
+    render(<CartItem product={product} />);
+
+    const button = screen.getByTestId("increase-btn");
+
+    await userEvent.click(button);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toBeCalledWith(product);
   });
 
-  it("should increase quantity by 1 when increase button is clicked", async () => {
-    renderCartItem();
+  it("should call decrease() when decrease button is clicked", async () => {
+    const { result } = renderHook(() => useCartStore());
+    const spy = jest.spyOn(result.current.actions, "decrease");
 
-    const increaseBtn = screen.getByTestId("increase-btn");
+    render(<CartItem product={product} />);
 
-    await userEvent.click(increaseBtn);
+    const button = screen.getByTestId("decrease-btn");
 
-    expect(screen.getByTestId("quantity").textContent).toBe("2");
-  });
+    await userEvent.click(button);
 
-  it("should decrease quantity by 1 when decrease button is clicked", async () => {
-    renderCartItem();
-
-    const increaseBtn = screen.getByTestId("increase-btn");
-    const decreaseBtn = screen.getByTestId("decrease-btn");
-
-    await userEvent.click(increaseBtn);
-    expect(screen.getByTestId("quantity").textContent).toBe("2");
-
-    await userEvent.click(increaseBtn);
-    expect(screen.getByTestId("quantity").textContent).toBe("3");
-
-    await userEvent.click(decreaseBtn);
-    expect(screen.getByTestId("quantity").textContent).toBe("2");
-  });
-
-  it("should not go below zero in the quantity", async () => {
-    renderCartItem();
-
-    const decreaseBtn = screen.getByTestId("decrease-btn");
-
-    await userEvent.click(decreaseBtn);
-    expect(screen.getByTestId("quantity").textContent).toBe("0");
-
-    await userEvent.click(decreaseBtn);
-    expect(screen.getByTestId("quantity").textContent).toBe("0");
-
-    await userEvent.click(decreaseBtn);
-
-    expect(
-      Number(screen.getByTestId("quantity").textContent)
-    ).toBeGreaterThanOrEqual(0);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toBeCalledWith(product);
   });
 
   it("should call remove() when remove button is clicked", async () => {
