@@ -61,6 +61,75 @@ describe("Cart Store", () => {
     expect(result.current.state.products).toHaveLength(2);
   });
 
+  it("should assign 1 as initial quantity on product add()", () => {
+    const product = server.create("product");
+
+    act(() => result.current.actions.add(product));
+
+    expect(result.current.state.products[0]?.quantity).toBe(1);
+  });
+
+  it("should increase product quantity", () => {
+    const product = server.create("product");
+
+    act(() => {
+      result.current.actions.add(product);
+      result.current.actions.increase(product);
+    });
+
+    expect(result.current.state.products[0]?.quantity).toBe(2);
+  });
+
+  it("should not increase product quantity if product is not found", () => {
+    const [product1, product2] = server.createList("product", 2);
+
+    act(() => {
+      result.current.actions.add(product1);
+      result.current.actions.increase(product2);
+    });
+
+    expect(result.current.state.products[0]?.quantity).toBe(1);
+    expect(result.current.state.products[1]).toBe(undefined);
+    expect(result.current.state.products[1]?.quantity).toBe(undefined);
+  });
+
+  it("should decrease product quantity", () => {
+    const product = server.create("product");
+
+    act(() => {
+      result.current.actions.add(product);
+      result.current.actions.increase(product);
+      result.current.actions.decrease(product);
+    });
+
+    expect(result.current.state.products[0]?.quantity).toBe(1);
+  });
+
+  it("should not decrease product quantity below 0", () => {
+    const product = server.create("product");
+
+    act(() => {
+      result.current.actions.add(product);
+      result.current.actions.decrease(product);
+      result.current.actions.decrease(product);
+    });
+
+    expect(result.current.state.products[0]?.quantity).toBe(0);
+  });
+
+  it("should not decrease product quantity if product is not found", () => {
+    const [product1, product2] = server.createList("product", 2);
+
+    act(() => {
+      result.current.actions.add(product1);
+      result.current.actions.increase(product1);
+      result.current.actions.decrease(product2);
+    });
+
+    expect(result.current.state.products[0]?.quantity).toBe(2);
+    expect(result.current.state.products[1]).toBe(undefined);
+  });
+
   it("should not add same product twice", () => {
     const product = server.create("product");
     const {

@@ -11,7 +11,9 @@ export interface CartState {
     toggle: () => void;
     reset: () => void;
     add: (product: Product) => void;
+    increase: (product: Product) => void;
     remove: (product: Product) => void;
+    decrease: (product: Product) => void;
     removeAll: () => void;
   };
 }
@@ -44,11 +46,26 @@ export const useCartStore = create<CartState>((set) => {
 
       add(product) {
         setState(({ state }) => {
-          state.open = true;
           const notExists = !state.products.find(({ id }) => id === product.id);
 
           if (notExists) {
+            if (!product.quantity) {
+              product.quantity = 1;
+            }
             state.products.push(product);
+            state.open = true;
+          }
+        });
+      },
+
+      increase(product) {
+        setState(({ state }) => {
+          const localProduct = state.products.find(
+            ({ id }) => id === product.id
+          );
+
+          if (localProduct && localProduct.quantity) {
+            localProduct.quantity++;
           }
         });
       },
@@ -61,6 +78,18 @@ export const useCartStore = create<CartState>((set) => {
             state.products = state.products.filter(({ id }) => {
               return id !== product.id;
             });
+          }
+        });
+      },
+
+      decrease(product) {
+        setState(({ state }) => {
+          const localProduct = state.products.find(
+            ({ id }) => id === product.id
+          );
+
+          if (localProduct && localProduct.quantity) {
+            localProduct.quantity--;
           }
         });
       },
