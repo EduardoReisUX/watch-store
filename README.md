@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+    Watch Store
+</h1>
 
-## Getting Started
+<p align="center">
+  <a href="#ℹ-descrição">Descrição</a> •
+  <a href="#-tecnologias">Tecnologias</a> •
+  <a href="#-pré-requisitos">Pré-requisitos</a> •
+  <a href="#-como-usar">Como usar</a>
+</p>
 
-First, run the development server:
+## ℹ Descrição
+
+Projeto desenvolvido ao longo do Módulo 3 do curso Testando Aplicações JavaScript do Vedovelli. 🚀
+
+Watch Store é um e-commerce completo de relógios, em que a aplicação foi testada de ponta-a-ponta com TDD, contendo testes unitários de componentes, condicionais e hooks, e testes de integração simulando um _stub_ de dados e analisando como a página se comporta em diferentes cenários. Algumas de suas funcionalidades:
+
+- Pesquisar por um produto na página
+- Adicionar um produto ao carrinho
+- Aumentar ou diminuir a quantidade destes produtos no carrinho
+- Remover um produto do carrinho
+- Remover todos os produtos do carrinho 
+  
+Diferentes partes do projeto foram testadas isoladamente, como os hooks e componentes mais simples, e em conjuntos, como a homepage. Alguns exemplos:
+- stores
+  - cart
+    - deve ser possível / não deve ser possível...
+- hooks
+  - useFetchProducts
+    - deve retornar uma lista de produtos
+    - deve retornar um erro caso...
+- components
+  - ...
+- pages
+  - home
+    - deve renderizar...
+
+## ⚒ Tecnologias
+
+#### Interface e renderização
+  - [**React**](https://pt-br.reactjs.org)
+  - [**Typescript**](https://www.typescriptlang.org)
+  - [**Next.js**](https://nextjs.org/)
+  - [**TailwindCSS**](https://tailwindcss.com/)
+  - [**Axios**](https://axios-http.com/)
+#### Testes unitários
+  - [**Jest**](https://jestjs.io/pt-BR/)
+  - [**Testing Library**](https://testing-library.com/)
+    - [**Testing Library / react**](https://testing-library.com/docs/react-testing-library/intro/)
+    - [**Testing Library / react-hooks**](https://react-hooks-testing-library.com/)
+    - [**Testing Library / user-event**](https://testing-library.com/docs/user-event/intro)
+#### Testes integrados
+  - [**Miragejs**](https://miragejs.com/)
+  - [**Fakerjs**](https://fakerjs.dev/)
+#### Gerenciamento de estados
+  - [**Zustand**](https://github.com/pmndrs/zustand)
+  - [**Immer**](https://immerjs.github.io/immer/)
+
+## ⚙ Pré-requisitos
+
+- <a href="https://git-scm.com/" target="_blank">Git</a>
+- <a href="https://yarnpkg.com/" target="_blank">Yarn</a>
+- Editor de código.
+
+## 📖 Como usar
+
+**Clone o projeto e acesse a pasta**
 
 ```bash
-npm run dev
-# or
-yarn dev
+$ git clone https://github.com/EduardoReisUX/watch-store.git && cd watch-store
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Siga os passos seguintes**
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+# Instale as dependências
+$ yarn
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Rode os testes unitários
+$ yarn test:unit
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+# Rode os testes de integração
+$ yarn test:integration
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Veja a cobertura de testes
+$ yarn test:coverage
 
-## Learn More
+# Rode a aplicação
+$ yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<p align="center">Feito com 💜 por <a href="https://github.com/EduardoReisUX">Eduardo dos Reis</a></p>
